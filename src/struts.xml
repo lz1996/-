@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+     <!-- 指定Web应用的默认编码集,相当于调用HttpServletRequest的setCharacterEncoding方法 -->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.devMode" value="true"></constant>
+       <package name="admin" namespace="/admin" extends="struts-default">
+           <action name="Welcome">
+               <result>Welcome.jsp</result>
+           </action>
+           <action name="*-*" class="com.hellozhu.action.{1}Action" method="{2}">
+       		<result>/admin/{1}-{2}.jsp</result>
+       		<result name="input">/admin/{1}-{2}.jsp</result>
+           </action>
+           
+      </package>
+      <package name="front" namespace="/" extends="struts-default">
+          <default-action-ref name="index" />
+          <action name="moodlist" class="com.hellozhu.action.MoodAction" method="list">
+              <result>/moodlist.jsp?curPage=${curPage}</result>
+          </action>
+           <action name="gustbook" class="com.hellozhu.action.GustAction" method="list">
+              <result>/gustbook.jsp?curPage=${curPage}</result>
+          </action>
+           <action name="gustsubmit" class="com.hellozhu.action.GustAction" method="insert">
+              <result>/gustbook.jsp?curPage=${curPage}</result>
+          </action>
+      </package>
+</struts>
