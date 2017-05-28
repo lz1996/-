@@ -11,8 +11,13 @@
                <result>Welcome.jsp</result>
            </action>
            <action name="*-*" class="com.hellozhu.action.{1}Action" method="{2}">
-       		<result>/admin/{1}-{2}.jsp</result>
+       		<result >/admin/{1}-{2}.jsp</result>
        		<result name="input">/admin/{1}-{2}.jsp</result>
+            <result name="pass" type="redirect">
+<!--             /admin/{1}-{2}.jsp?title=${article.title}&amp;id=${article.id}&amp;path=${article.path}&amp;type=${article.type}&amp;content=${content}
+ -->            <param name="location">/admin/{1}-{2}.jsp?title=${article.title}&amp;id=${article.id}&amp;path=${article.path}&amp;type=${article.type}</param>
+                <param name="encode">true</param>
+ </result>
            </action>
            
       </package>

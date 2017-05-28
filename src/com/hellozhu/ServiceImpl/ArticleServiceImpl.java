@@ -1,12 +1,15 @@
 package com.hellozhu.ServiceImpl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import com.hellozhu.Dao.ArticleDao;
 import com.hellozhu.DaoImpl.ArticleDaoImpl;
@@ -20,7 +23,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public void add(String content,Article article) {
 		  StringBuilder path=new StringBuilder();
 		   path.append("D:\\FileDemo");//保存生成Html文件的目录
-		  
+		 // System.out.println(path.length());
 		   File file1;
 		   String str=null;
 		  
@@ -67,7 +70,7 @@ public class ArticleServiceImpl implements ArticleService {
 			e1.printStackTrace();
 		}
 		   File file2 = new File(path.append(name+".html").toString());
-		   System.out.println(path);
+		  // System.out.println(path);
 		   StringBuilder sb = new StringBuilder();
 		   try {
 		    file2.createNewFile();//创建文件
@@ -76,15 +79,92 @@ public class ArticleServiceImpl implements ArticleService {
 		    PrintStream printStream = new PrintStream(new FileOutputStream(file2));
 		   
 		    printStream.println(sb.toString());//将字符串写入文件
-		   
+		    printStream.close();
+		   path.delete(0, 11);
 		   String newPath=path.toString().replace("\\", "/");
-		   
+		   //System.out.println(newPath);
 		   article.setPath(newPath);
-		 //  articledao.add(article);
+		   articledao.add(article);
 		   } catch (IOException e) {
 		    e.printStackTrace();
 		   }
 
+	}
+
+	@Override
+	public List<Article> list(int curPage) {
+		// TODO Auto-generated method stub
+		List<Article> list=articledao.list(curPage);
+		return list;
+		}
+
+	@Override
+	public long listSize() {
+		// TODO Auto-generated method stub
+		long size=articledao.listSize();
+		return size;
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		String path=articledao.delete(id);
+		File file=new File("D:\\FileDemo"+path);
+		if(file.exists())
+			file.delete();
+	}
+
+	@Override
+	public Article getArticle(int id) {
+		// TODO Auto-generated method stub
+		Article article=articledao.loadById(id);
+		return article;
+	}
+
+	@Override
+	public String getContent(String path) {
+		// TODO Auto-generated method stub
+		File file=new File("D:\\FileDemo"+path);
+		StringBuilder result = new StringBuilder();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
+            String s = null;
+            while((s = br.readLine())!=null){//使用readLine方法，一次读一行
+                result.append(System.lineSeparator()+s);
+            }
+            br.close();    
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        System.out.println(result.toString());
+		return result.toString();
+	}
+
+	@Override
+	public void update(String content, Article article) {
+		File file=new File("D:\\FileDemo"+article.path);
+		try {
+			content=new String(content.getBytes("ISO-8859-1"),"UTF-8");
+			String title=new String(article.getTitle().getBytes("ISO-8859-1"),"UTF-8");
+			article.setTitle(title);
+			String type=new String(article.getType().getBytes("ISO-8859-1"),"UTF-8");
+			article.setType(type);
+
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		   StringBuilder sb = new StringBuilder();
+		   try {
+			    sb.append(content);
+			    PrintStream printStream = new PrintStream(new FileOutputStream(file));
+			    printStream.println(sb.toString());//将字符串写入文件
+			   //System.out.println(newPath);
+			    printStream.close();
+			   articledao.update(article);
+			   } catch (IOException e) {
+			    e.printStackTrace();
+			   }
 	}
 
 }

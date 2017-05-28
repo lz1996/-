@@ -38,6 +38,7 @@
  	 	<mapping class="com.lz.hibernateID.Teacher"/> -->
  	    <mapping class="com.hellozhu.model.Mood"/> 
   	    <mapping class="com.hellozhu.model.Gust"/> 
+   	    <mapping class="com.hellozhu.model.Article"/> 
  
     </session-factory>
 
