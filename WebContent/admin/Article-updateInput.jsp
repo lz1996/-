@@ -20,18 +20,17 @@
     </style>
 </head>
 <body>
-<%-- <%
-String title=request.getParameter("title");
-title=URLDecoder.decode(title, "UTF-8");
- %> --%>
-<form action="Article-update" method="post">
+<form action="Article-update" method="post" onsubmit="return getPlainTxt()">
 <div>
     <h1>开始修改文章了</h1>
-         文章题目：<input name="article.title" type="text" value="<s:property value="#parameters.title"/>"><br>
+         文章题目：<input name="article.title" type="text" value="<s:property value="#parameters.title"/>">
          类别 :<select id="slt" name="article.type" class="select" >
     	 <option value="技术问题" >技术问题</option>
    		 <option value="其他问题" >其他问题</option>
-    </select>
+    </select><br>
+        关键词：<input name="article.keyword" type="text" value="<s:property value="#parameters.keyword"/>">
+        封面：<input type="file" onchange="previewFile()" name="cover"><br>
+    <img src="" height="100px" width="170px" alt="封面预览..."/>
 <script>
    document.getElementById("slt").value = "<s:property value="#parameters.type"/>";//此时会选中第2个
 </script>
@@ -44,10 +43,28 @@ title=URLDecoder.decode(title, "UTF-8");
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
     UE.delEditor('editor');
     var ue = UE.getEditor('editor');
- 
+    function getPlainTxt() {
+        var arr = [];
+        arr.push(UE.getEditor('editor').getPlainTxt());
+        document.getElementById("summary").value=arr;
+    }
+    function previewFile() {
+    	 var preview = document.querySelector('img');
+    	 var file  = document.querySelector('input[type=file]').files[0];
+    	 var reader = new FileReader();
+    	 reader.onloadend = function () {
+    	  preview.src = reader.result;
+    	 }
+    	 if (file) {
+    	  reader.readAsDataURL(file);
+    	 } else {
+    	  preview.src = "";
+    	 }
+    	}
 </script>
 <input type="hidden" name="article.id" value="<s:property value="#parameters.id"/>">
 <input type="hidden" name="article.path" value="<s:property value="#parameters.path"/>">
+<input type="hidden" id="summary" name="article.summary"><br>
 <input type="submit" value="提交">
 </form>
 <s:debug></s:debug>

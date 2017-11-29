@@ -37,12 +37,13 @@ if(curPage<=0) curPage=1;
  <center>
  <table border="1" width="100%">
  <tr>
-  <td colspan="9" bgcolor="#B2DFEE" align="center">文章列表</td><!-- 跨8列 -->
+  <td colspan="10" bgcolor="#B2DFEE" align="center">文章列表</td><!-- 跨8列 -->
  </tr>
  <tr bgcolor="#BBFFFF">
   <td colspan="5">题目</td><!-- 跨5列 -->
   <td colspan="1">地址</td>
   <td colspan="1">类别</td>
+  <td colspan="1">关键词</td>
   <td colspan="1">删除</td>
   <td colspan="1">修改</td>
  </tr>
@@ -51,6 +52,7 @@ if(curPage<=0) curPage=1;
   <td colspan="5"><s:property value="#c.title"/></td><!-- 跨5列 -->
   <td colspan="1"><s:property value="#c.path"/></td>
   <td colspan="1"><s:property value="#c.type"/></td>
+  <td colspan="1"><s:property value="#c.keyword"/></td>
   <td colspan="1"><a href="admin/Article-delete?Id=<s:property value="#c.id"/>">删除</a></td>
   <td colspan="1"><a href="admin/Article-updateInput?Id=<s:property value="#c.id"/>">修改</a></td>
 

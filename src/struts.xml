@@ -7,24 +7,33 @@
     <constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.devMode" value="true"></constant>
        <package name="admin" namespace="/admin" extends="struts-default">
+           <default-action-ref name="checkUser"/>
            <action name="Welcome">
                <result>Welcome.jsp</result>
+           </action>
+           <action name="checkUser">
+           		<result>Check.jsp</result>
+           </action>
+            <action name="checkUserAndPassword" class="com.hellozhu.action.UserAction" method="check">
+           		<result name="false">Check.jsp</result>
+           		<result name="true">Back.jsp</result>
            </action>
            <action name="*-*" class="com.hellozhu.action.{1}Action" method="{2}">
        		<result >/admin/{1}-{2}.jsp</result>
        		<result name="input">/admin/{1}-{2}.jsp</result>
             <result name="pass" type="redirect">
-<!--             /admin/{1}-{2}.jsp?title=${article.title}&amp;id=${article.id}&amp;path=${article.path}&amp;type=${article.type}&amp;content=${content}
- -->            <param name="location">/admin/{1}-{2}.jsp?title=${article.title}&amp;id=${article.id}&amp;path=${article.path}&amp;type=${article.type}</param>
+                <param name="location">/admin/{1}-{2}.jsp?title=${article.title}&amp;id=${article.id}&amp;path=${article.path}&amp;type=${article.type}&amp;keyword=${article.keyword}</param>
                 <param name="encode">true</param>
- </result>
+ 			</result>
            </action>
-           
       </package>
       <package name="front" namespace="/" extends="struts-default">
           <default-action-ref name="index" />
           <action name="moodlist" class="com.hellozhu.action.MoodAction" method="list">
               <result>/moodlist.jsp?curPage=${curPage}</result>
+          </action>
+          <action name="knowledge" class="com.hellozhu.action.ArticleAction" method="list">
+              <result>/knowledge.jsp?curPage=${curPage}</result>
           </action>
            <action name="gustbook" class="com.hellozhu.action.GustAction" method="list">
               <result>/gustbook.jsp?curPage=${curPage}</result>

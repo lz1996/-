@@ -18,21 +18,43 @@
     </style>
 </head>
 <body>
-<form action="Article-add" method="post">
+<form action="Article-add" method="post" enctype="multipart/form-data" onsubmit="return getPlainTxt()">
 <div>
     <h1>开始写文章了</h1>
-         文章题目：<input name="article.title" type="text"><br>
+         文章题目：<input name="article.title" type="text">
          类别 :<select name="article.type" class="select">
     <option value="技术问题" >技术问题</option>
-    <option value="其他问题" >其他问题</option></select>
+    <option value="其他问题" >其他问题</option></select><br>
+        关键词：<input name="article.keyword" type="text" placeholder="多个关键词用逗号隔开">
+        封面：<input type="file" onchange="previewFile()" name="cover"><br>
+    <img src="" height="100px" width="170px" alt="封面预览..."/>    
     <textarea id="editor" name="content" style="width:1024px;height:500px;"></textarea>
 </div>
 <script type="text/javascript">
     //实例化编辑器
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
     var ue = UE.getEditor('editor');
+    function getPlainTxt() {
+        var arr = [];
+        arr.push(UE.getEditor('editor').getPlainTxt());
+        document.getElementById("summary").value=arr;
+    }
+    function previewFile() {
+    	 var preview = document.querySelector('img');
+    	 var file  = document.querySelector('input[type=file]').files[0];
+    	 var reader = new FileReader();
+    	 reader.onloadend = function () {
+    	  preview.src = reader.result;
+    	 }
+    	 if (file) {
+    	  reader.readAsDataURL(file);
+    	 } else {
+    	  preview.src = "";
+    	 }
+    	}
 </script>
-<input type="submit" value="提交">
+<input type="hidden" id="summary" name="article.summary"><br>
+<input type="submit" value="提交" >
 </form>
 </body>
 </html>

@@ -21,24 +21,31 @@ public class GustDaoImpl implements GustDao{
 		try {
 			gust.setMessage(new String(gust.getMessage().getBytes("ISO-8859-1"),"UTF-8"));
 			gust.setName(new String(gust.getName().getBytes("ISO-8859-1"),"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
+			session.save(gust);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
 		}
-		session.save(gust);
-		session.getTransaction().commit();
 	} 
 
 	@Override
 	public List<Gust> list(Boolean bool,int curPage) {
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query q = session.createQuery("from Gust g where g.ischeck=:bool")
-				.setBoolean("bool", bool);
-		q.setMaxResults(5);
-		q.setFirstResult(5*(curPage-1));
-		List<Gust> list = (List<Gust>)q.list();
-		session.getTransaction().commit();
+		List<Gust> list =null;
+		try {
+			Query q = session.createQuery("from Gust g where g.ischeck=:bool")
+					.setBoolean("bool", bool);
+			q.setMaxResults(5);
+			q.setFirstResult(5*(curPage-1));
+		     list = (List<Gust>)q.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
 		return list;
 	}
 
@@ -46,10 +53,15 @@ public class GustDaoImpl implements GustDao{
 	public void pass(int id) {
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Gust gust=session.load(Gust.class, id);
-		gust.setIscheck(true);
-		session.update(gust);
-		session.getTransaction().commit();
+		try {
+			Gust gust=session.load(Gust.class, id);
+			gust.setIscheck(true);
+			session.update(gust);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
 	}
 
 	@Override
@@ -57,20 +69,32 @@ public class GustDaoImpl implements GustDao{
 		long size = 0 ;
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query query =session.createQuery("select count(g) from Gust g where g.ischeck=:bool")
-				.setBoolean("bool", bool);
-		size = (long)query.getSingleResult();
-		session.getTransaction().commit();
-		return size;	}
+		try {
+			Query query =session.createQuery("select count(g) from Gust g where g.ischeck=:bool")
+					.setBoolean("bool", bool);
+			size = (long)query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
+		return size;	
+		}
 
 	@Override
 	public void deleteById(int id) {
 		// TODO Auto-generated method stub
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Gust gust=session.load(Gust.class, id);
-		session.delete(gust);
-		session.getTransaction().commit();
+		try {
+			Gust gust=session.load(Gust.class, id);
+			session.delete(gust);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
+		
 	}
 
 }

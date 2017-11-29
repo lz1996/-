@@ -11,7 +11,7 @@ p.dateview { margin-bottom: 10px }
 p.dateview span { margin: 0 10px 0 0 }
 p.dateview span a { color: #63B120 }
 .newblog figure { float: left; }
-.newblog figure img { width: 170px; border: #EAE6E7 1px solid; padding: 4px; }
+.newblog figure img { width: 170px; height:100px; border: #EAE6E7 1px solid; padding: 4px; }
 .nlist { width: 530px; float: left; margin: 0 0 0 10px; line-height: 1.9; }
 a.readmore { background: #f90; color: #fff; padding: 5px 10px; float: right; margin: 20px 0 0 0 }
 .line { overflow: hidden; width: 97%; height: 20px; border-bottom: 1px dashed #ccc; }
@@ -32,6 +32,9 @@ a.readmore { background: #f90; color: #fff; padding: 5px 10px; float: right; mar
 .rnav h2{ font-size:14px; padding-left:40px; line-height:30px; height:30px; margin-bottom:10px}
 .rnav li { width: 120px; text-align: center; display: inline-block; margin-bottom: 5px; margin-right: 5px; float: left; height: 40px; line-height: 40px }
 .rnav li a { color: #333; display: block; -webkit-transition: all 1s; -moz-transition: all 1s; -o-transition: all 1s; transition: all 1s ; border:#CCC 1px solid}
+.weixin { background: url(../images/weixin.jpg) no-repeat; width: 100%; display: inline-block; height: 274px; overflow: hidden; margin: 10px 0; clear: both }
+.website { margin: 10px 0; background: #F3F3F3; border-radius: 50%; text-align: center; }
+.website li { line-height: 26px; text-shadow: #fff 1px 1px 1px; height: 26px; }
 aside .rnav ul li a:hover { background: rgba(255,255,255,0.2); -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); -o-transform: rotate(360deg); transform: rotate(360deg); }
 .ad{ width:100%; margin:10px auto;}
 .page{ margin:20px 0 0 0; text-align:center; width:100%;overflow: hidden;}

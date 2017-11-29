@@ -17,11 +17,17 @@ public class MoodDaoImpl implements MoodDao {
 	public List<Mood> list(int curPage){
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query q = session.createQuery("from Mood");
-		q.setMaxResults(5);
-		q.setFirstResult(5*(curPage-1));
-		List<Mood> list = (List<Mood>)q.list();
-		session.getTransaction().commit();
+		List<Mood> list =null;
+		try{
+			Query q = session.createQuery("from Mood mood order by mood.posttime desc");
+			q.setMaxResults(5);
+			q.setFirstResult(5*(curPage-1));
+			 list = (List<Mood>)q.list();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
 		return list;
 		
 	}
@@ -30,12 +36,12 @@ public class MoodDaoImpl implements MoodDao {
 		session.beginTransaction();
 		try {
 		mood.setContent(new String(mood.getContent().getBytes("ISO-8859-1"),"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		session.save(mood);
-		session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
 		
 	}
 	public void delete(Mood mood){
@@ -44,9 +50,14 @@ public class MoodDaoImpl implements MoodDao {
 	public void deleteById(int id){
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Mood mood=session.load(Mood.class, id);
-		session.delete(mood);
-		session.getTransaction().commit();
+		try {
+			Mood mood=session.load(Mood.class, id);
+			session.delete(mood);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				session.getTransaction().commit();
+			}
 		
 }
 	public void update(Mood mood){
@@ -54,21 +65,26 @@ public class MoodDaoImpl implements MoodDao {
 		session.beginTransaction();
 		try {
 			mood.setContent(new String(mood.getContent().getBytes("ISO-8859-1"),"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
+			session.update(mood);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
 		}
-		session.update(mood);
-		session.getTransaction().commit();
-	
 	}
 	public Mood loadByID(int id){
 		Mood mood = null ;
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		
-		mood=session.get(Mood.class, id);
-		session.getTransaction().commit();
+		try {
+			mood=session.get(Mood.class, id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
 		return mood;
 	
 	}
@@ -77,9 +93,15 @@ public class MoodDaoImpl implements MoodDao {
 		long size = 0 ;
 		Session session=sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Query query =session.createQuery("select count(m) from Mood m ");
-		size = (long)query.getSingleResult();
-		session.getTransaction().commit();
+		try {
+			Query query =session.createQuery("select count(m) from Mood m ");
+			size = (long)query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			session.getTransaction().commit();
+		}
 		return size;
 	}
 }
